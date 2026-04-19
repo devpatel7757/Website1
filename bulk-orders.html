@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Orders | Bhumi Enterprise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:#080808;
+      --surface:#0c0c0c;
+      --surface-2:#111111;
+      --gold:#B8920E;
+      --gold-light:#DEC76A;
+      --text-1:#F0EDE8;
+      --text-2:#9A9590;
+      --border:rgba(180,145,40,0.13);
+      --border-faint:rgba(180,145,40,0.06);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--black);
+      color:var(--text-1);
+    }
+
+    .nav{
+      background:rgba(8,8,8,0.95);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 48px;
+      height:78px;
+      border-bottom:1px solid var(--border-faint);
+    }
+
+    .nav-logo{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .site-logo{
+      height:58px;
+      width:auto;
+      display:block;
+      object-fit:contain;
+    }
+
+    .nav-brand{
+      font-size:16px;
+      color:var(--text-1);
+      letter-spacing:0.07em;
+    }
+
+    .nav-menu{
+      display:flex;
+      gap:30px;
+    }
+
+    .nav-menu a{
+      text-decoration:none;
+      color:var(--text-2);
+      font-size:11px;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+    }
+
+    .nav-menu a:hover{
+      color:var(--gold-light);
+    }
+
+    .hero{
+      padding:100px 48px 70px;
+      text-align:center;
+      background:var(--surface);
+    }
+
+    .hero h1{
+      font-size:56px;
+      font-weight:300;
+      margin-bottom:18px;
+    }
+
+    .gold{
+      color:var(--gold-light);
+    }
+
+    .hero p{
+      max-width:700px;
+      margin:0 auto;
+      color:var(--text-2);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .section{
+      padding:70px 48px;
+    }
+
+    .bulk-wrap{
+      display:grid;
+      grid-template-columns:1.2fr 0.9fr;
+      gap:28px;
+    }
+
+    .bulk-left{
+      background:var(--surface);
+      border:1px solid var(--border-faint);
+      padding:52px 44px;
+    }
+
+    .label{
+      display:block;
+      color:var(--gold);
+      font-size:10px;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+
+    .bulk-left h2{
+      font-size:42px;
+      font-weight:400;
+      margin-bottom:14px;
+      line-height:1.2;
+    }
+
+    .bulk-left p{
+      color:var(--text-2);
+      line-height:1.9;
+      font-size:14px;
+    }
+
+    .bulk-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:26px;
+    }
+
+    .bulk-tag{
+      font-size:10px;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:var(--gold-light);
+      border:1px solid rgba(180,145,40,0.22);
+      padding:7px 12px;
+    }
+
+    .bulk-card{
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      padding:40px 34px;
+    }
+
+    .bulk-card h3{
+      font-size:24px;
+      font-weight:400;
+      margin-bottom:24px;
+    }
+
+    .bulk-list{
+      display:grid;
+      gap:12px;
+      margin-bottom:28px;
+    }
+
+    .bulk-item{
+      font-size:14px;
+      color:var(--text-2);
+      line-height:1.7;
+      border-bottom:1px solid var(--border-faint);
+      padding-bottom:10px;
+    }
+
+    .bulk-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:20px;
+    }
+
+    .btn-gold, .btn-ghost{
+      padding:14px 20px;
+      text-decoration:none;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:0.1em;
+      display:inline-block;
+    }
+
+    .btn-gold{
+      background:var(--gold);
+      color:#000;
+    }
+
+    .btn-ghost{
+      border:1px solid rgba(180,145,40,0.22);
+      color:var(--gold-light);
+    }
+
+    .footer{
+      padding:32px 48px;
+      border-top:1px solid var(--border-faint);
+      color:var(--text-2);
+      font-size:12px;
+      text-align:center;
+    }
+
+    @media (max-width: 900px){
+      .bulk-wrap{grid-template-columns:1fr}
+      .nav{padding:0 20px;flex-wrap:wrap;height:auto;padding-top:16px;padding-bottom:16px}
+      .nav-menu{flex-wrap:wrap;gap:16px}
+      .hero,.section{padding-left:20px;padding-right:20px}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-logo">
+      <img src="logo-black.png" alt="Bhumi Enterprise Logo" class="site-logo">
+      <span class="nav-brand">Bhumi Enterprise</span>
+    </div>
+
+    <div class="nav-menu">
+      <a href="bhumi.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="bulk-orders.html">Bulk Orders</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Bulk Orders.<br><span class="gold">Premium Service.</span></h1>
+    <p>
+      Special pricing and dedicated support for builders, housing societies, hotels, schools,
+      government offices, and corporate buyers across Gandhinagar and nearby areas.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="bulk-wrap">
+      <div class="bulk-left">
+        <span class="label">Bulk & Corporate Orders</span>
+        <h2>Big orders.<br><span class="gold">Better prices.</span></h2>
+        <p>
+          We provide fast quotations, GST billing, delivery coordination, installation support,
+          and premium appliance brand options for business and large-volume buyers.
+        </p>
+
+        <div class="bulk-tags">
+          <span class="bulk-tag">Builders</span>
+          <span class="bulk-tag">Hotels</span>
+          <span class="bulk-tag">Offices</span>
+          <span class="bulk-tag">Schools</span>
+          <span class="bulk-tag">GIFT City</span>
+          <span class="bulk-tag">Societies</span>
+        </div>
+      </div>
+
+      <div class="bulk-card">
+        <h3>Why Bulk Buyers Choose Us</h3>
+
+        <div class="bulk-list">
+          <div class="bulk-item">✔ Best bulk pricing</div>
+          <div class="bulk-item">✔ GST invoice available</div>
+          <div class="bulk-item">✔ Delivery support</div>
+          <div class="bulk-item">✔ Installation assistance</div>
+          <div class="bulk-item">✔ Premium brand options</div>
+          <div class="bulk-item">✔ Dedicated sales support</div>
+        </div>
+
+        <div class="bulk-actions">
+          <a href="tel:+919876543210" class="btn-gold">Get Bulk Quote</a>
+          <a href="https://wa.me/919876543210?text=Hello%20Bhumi%20Enterprise%2C%20I%20need%20a%20bulk%20order%20quote." class="btn-ghost" target="_blank">WhatsApp Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © 2025 Bhumi Enterprise · Gandhinagar · Bulk Appliance Solutions
+  </footer>
+
+</body>
+</html>

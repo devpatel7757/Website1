@@ -96,6 +96,11 @@ body::after {
   border-bottom: 1px solid var(--border-faint);
 }
 .nav-logo { display: flex; align-items: center; gap: 11px; }
+.site-logo{
+  height: 78px;
+  width: auto;
+  display: block;
+}
 .nav-monogram {
   width: 30px; height: 30px;
   border: 1px solid rgba(180,145,40,0.4);
@@ -350,6 +355,86 @@ body::after {
 }
 .pcard:hover .pcard-arrow { color: var(--gold-mid); }
 
+.bulk-wrap{
+  display:grid;
+  grid-template-columns: 1.2fr 0.9fr;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.bulk-left{
+  background: var(--surface);
+  border: 1px solid var(--border-faint);
+  padding: 52px 44px;
+}
+
+.bulk-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:26px;
+}
+
+.bulk-tag{
+  font-size:10px;
+  font-weight:500;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold-light);
+  border:1px solid rgba(180,145,40,0.22);
+  padding:7px 12px;
+}
+
+.bulk-card{
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 40px 34px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.bulk-card-top{
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text-1);
+  margin-bottom: 24px;
+  letter-spacing: -0.01em;
+}
+
+.bulk-list{
+  display:grid;
+  gap:12px;
+  margin-bottom:28px;
+}
+
+.bulk-item{
+  font-size:13px;
+  font-weight:300;
+  color:var(--text-2);
+  line-height:1.7;
+  border-bottom:1px solid var(--border-faint);
+  padding-bottom:10px;
+}
+
+.bulk-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+@media (max-width: 900px){
+  .bulk-wrap{
+    grid-template-columns:1fr;
+  }
+
+  .bulk-left,
+  .bulk-card{
+    padding:36px 24px;
+  }
+}
+
 /* ── FEATURES ────────────────────────────────────────── */
 .fgrid {
   display: grid;
@@ -592,12 +677,15 @@ body::after {
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">
-    <div class="nav-monogram">B</div>
-    <span class="nav-brand">Bhumi Enterprise</span>
-  </div>
+  <img src="logo-black.png" alt="Bhumi Enterprise Logo" class="site-logo">
+</div> 
   <div class="nav-menu">
-    <a>Products</a><a>Bulk Orders</a><a>EMI</a><a>Service</a><a>Contact</a>
-  </div>
+  <a href="products.html">Products</a>
+  <a href="bulk-orders.html">Bulk Orders</a>
+  <a href="emi.html">EMI</a>
+  <a href="service.html">Service</a>
+  <a href="contact.html">Contact</a>
+</div>
   <button class="nav-btn">Get a Quote</button>
 </nav>
 
@@ -682,6 +770,49 @@ body::after {
       <div class="pcard-brands">Bosch · IFB · Siemens</div>
       <div class="pcard-price">From ₹22,000</div>
       <div class="pcard-arrow">Explore →</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-dark">
+  <div class="bulk-wrap">
+    <div class="bulk-left">
+      <span class="sec-label">Bulk &amp; Corporate Orders</span>
+      <h2 class="sec-title light">
+        Big orders.<br>
+        <span class="gold-text">Better prices.</span>
+      </h2>
+      <p class="sec-sub light">
+        Special pricing for builders, housing societies, hotels, schools, government offices and corporate buyers.
+        Fast quotations, GST billing, delivery and installation support included.
+      </p>
+
+      <div class="bulk-tags">
+        <span class="bulk-tag">Builders</span>
+        <span class="bulk-tag">Hotels</span>
+        <span class="bulk-tag">Offices</span>
+        <span class="bulk-tag">Schools</span>
+        <span class="bulk-tag">GIFT City</span>
+        <span class="bulk-tag">Societies</span>
+      </div>
+    </div>
+
+    <div class="bulk-card">
+      <div class="bulk-card-top">Why Bulk Buyers Choose Us</div>
+
+      <div class="bulk-list">
+        <div class="bulk-item">✔ Best bulk pricing</div>
+        <div class="bulk-item">✔ GST invoice available</div>
+        <div class="bulk-item">✔ Delivery support</div>
+        <div class="bulk-item">✔ Installation assistance</div>
+        <div class="bulk-item">✔ Premium brand options</div>
+        <div class="bulk-item">✔ Dedicated sales support</div>
+      </div>
+
+      <div class="bulk-actions">
+        <button class="btn-gold">Get Bulk Quote</button>
+        <button class="btn-wa">WhatsApp Sales</button>
+      </div>
     </div>
   </div>
 </section>
