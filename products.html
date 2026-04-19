@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — Bhumi Enterprise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:        #080808;
+      --surface:      #0c0c0c;
+      --surface-2:    #111111;
+      --surface-3:    #161616;
+      --cream-bg:     #f5f2ec;
+      --gold-deep:    #8B6914;
+      --gold:         #B8920E;
+      --gold-mid:     #C9A227;
+      --gold-warm:    #D4AF37;
+      --gold-light:   #DEC76A;
+      --white:        #FAFAF8;
+      --text-1:       #F0EDE8;
+      --text-2:       #9A9590;
+      --text-3:       #5A5652;
+      --border:       rgba(180,145,40,0.13);
+      --border-faint: rgba(180,145,40,0.06);
+      --f-display:    'Inter', system-ui, sans-serif;
+      --f-body:       'Inter', system-ui, sans-serif;
+      --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html, body {
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: var(--f-body);
+      background: var(--black);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.5;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes goldShimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.38; }
+    }
+
+    .gold-text {
+      background: linear-gradient(90deg,
+        var(--gold-mid), var(--gold-warm), var(--gold-light),
+        var(--gold-warm), var(--gold-mid));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: goldShimmer 5s linear infinite;
+    }
+
+    .page {
+      background: var(--black);
+      border-radius: 18px;
+      border: 1px solid var(--border-faint);
+      overflow: hidden;
+      box-shadow: 0 60px 120px rgba(0,0,0,0.85);
+    }
+
+    .nav {
+      background: rgba(8,8,8,0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 78px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      border-bottom: 1px solid var(--border-faint);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .site-logo {
+      height: 58px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      max-width: 100%;
+    }
+
+    .nav-brand {
+      font-family: var(--f-display);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-1);
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .nav-menu a {
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--text-2);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s var(--ease);
+      cursor: pointer;
+    }
+
+    .nav-menu a:hover,
+    .nav-menu a.active {
+      color: var(--gold-warm);
+    }
+
+    .nav-btn {
+      font-family: var(--f-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      background: transparent;
+      border: 1px solid rgba(180,145,40,0.35);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-btn:hover {
+      background: var(--gold-mid);
+      color: var(--black);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      margin-left: auto;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--gold-warm);
+      transition: 0.25s var(--ease);
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    .hero {
+      background: var(--surface);
+      min-height: 62vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 48px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 350px;
+      background: radial-gradient(ellipse at top, rgba(180,146,14,0.12) 0%, transparent 65%);
+      pointer-events: none;
+      animation: subtlePulse 7s ease-in-out infinite;
+    }
+
+    .hero-bottom-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent, var(--border) 30%,
+        rgba(180,145,40,0.3) 50%, var(--border) 70%, transparent);
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      margin-bottom: 30px;
+      animation: fadeUp 0.7s var(--ease) both;
+    }
+
+    .hero-title {
+      font-family: var(--f-display);
+      font-size: clamp(44px, 7vw, 76px);
+      font-weight: 300;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      animation: fadeUp 0.7s 0.1s var(--ease) both;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.85;
+      max-width: 700px;
+      margin: 0 auto 44px;
+      animation: fadeUp 0.7s 0.26s var(--ease) both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.34s var(--ease) both;
+    }
+
+    .btn-gold {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold-mid);
+      border: none;
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-warm);
+      box-shadow: 0 6px 28px rgba(180,145,14,0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(180,145,40,0.3);
+      color: var(--gold-light);
+    }
+
+    .sec {
+      padding: 88px 48px;
+    }
+
+    .sec-dark   { background: var(--surface); }
+    .sec-darker { background: var(--surface-2); }
+    .sec-cream  { background: var(--cream-bg); }
+    .sec-black  { background: var(--black); }
+
+    .sec-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      margin-bottom: 16px;
+    }
+
+    .sec-title {
+      font-family: var(--f-display);
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+    }
+
+    .sec-title.light { color: var(--text-1); }
+    .sec-title.dark  { color: #18150f; }
+
+    .sec-sub {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.85;
+      margin-top: 12px;
+    }
+
+    .sec-sub.light { color: var(--text-2); }
+    .sec-sub.dark  { color: #6a6050; }
+
+    .filters-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .filter-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filter-box label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .filter-select {
+      width: 100%;
+      background: var(--surface-2);
+      color: var(--text-1);
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      font-size: 13px;
+      font-family: var(--f-body);
+      outline: none;
+    }
+
+    .filter-select:focus {
+      border-color: var(--gold-mid);
+    }
+
+    .results-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: var(--text-2);
+      line-height: 1.7;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border-faint);
+      border: 1px solid var(--border-faint);
+      margin-top: 56px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      padding: 42px 30px;
+      transition: background 0.2s;
+    }
+
+    .product-card:hover {
+      background: var(--surface-2);
+    }
+
+    .product-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .product-icon {
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .product-tag {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      border: 1px solid rgba(180,145,40,0.22);
+      padding: 6px 10px;
+      white-space: nowrap;
+    }
+
+    .product-name {
+      font-family: var(--f-display);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--text-1);
+      margin-bottom: 8px;
+    }
+
+    .product-brand {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      margin-bottom: 12px;
+    }
+
+    .product-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .product-price {
+      font-family: var(--f-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--gold-warm);
+      margin-bottom: 18px;
+    }
+
+    .product-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .feature-chip {
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border: 1px solid rgba(180,145,40,0.18);
+      color: var(--text-2);
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 11px 16px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-btn.gold {
+      background: var(--gold-mid);
+      color: var(--black);
+    }
+
+    .mini-btn.ghost {
+      border: 1px solid var(--border);
+      color: var(--gold-light);
+    }
+
+    .empty-message {
+      display: none;
+      margin-top: 28px;
+      padding: 18px 20px;
+      border: 1px solid var(--border);
+      color: var(--text-2);
+      font-size: 13px;
+      line-height: 1.8;
+      background: var(--surface);
+    }
+
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1px;
+      background: var(--border-faint);
+      border: 1px solid var(--border-faint);
+      margin-top: 56px;
+    }
+
+    .brand-card {
+      background: var(--surface-2);
+      padding: 30px 18px;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .brand-card:hover {
+      background: var(--surface-3);
+    }
+
+    .brand-card span {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .footer {
+      background: #050505;
+      padding: 52px 48px 28px;
+      border-top: 1px solid var(--border-faint);
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand {
+      font-family: var(--f-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-1);
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .footer-tagline {
+      font-family: var(--f-display);
+      font-size: 12px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+
+    .footer-info {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--text-3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .footer-links a {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-warm);
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: var(--border-faint);
+      margin-bottom: 24px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-wa-btn {
+      font-family: var(--f-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold-mid);
+      border: none;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-wa-btn:hover {
+      background: var(--gold-warm);
+    }
+
+    @media (max-width: 1100px) {
+      .nav {
+        padding: 0 24px;
+      }
+
+      .hero {
+        padding: 90px 24px 70px;
+        min-height: auto;
+      }
+
+      .sec,
+      .footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .product-grid,
+      .brand-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        height: auto;
+        padding: 16px 20px;
+        flex-wrap: wrap;
+        gap: 14px;
+        position: relative;
+      }
+
+      .nav-logo {
+        width: auto;
+        justify-content: flex-start;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .nav-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 18px 0 6px;
+        border-top: 1px solid var(--border-faint);
+        margin-top: 8px;
+      }
+
+      .nav-menu.show {
+        display: flex;
+      }
+
+      .nav-menu a {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+      }
+
+      .nav-btn {
+        margin: 8px 0 0;
+      }
+
+      .hero {
+        padding: 80px 20px 60px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 9vw, 58px);
+      }
+
+      .hero-desc {
+        font-size: 13px;
+        max-width: 100%;
+      }
+
+      .footer-top,
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        line-height: 1.4;
+      }
+
+      .page {
+        border-radius: 0;
+      }
+
+      .nav {
+        padding: 14px 16px;
+        gap: 12px;
+      }
+
+      .nav-logo {
+        width: auto;
+        justify-content: flex-start;
+      }
+
+      .site-logo {
+        height: 48px;
+      }
+
+      .nav-brand {
+        font-size: 14px;
+      }
+
+      .menu-toggle {
+        width: 42px;
+        height: 42px;
+      }
+
+      .nav-menu {
+        gap: 14px;
+        padding-top: 16px;
+      }
+
+      .nav-menu a {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+      }
+
+      .nav-btn,
+      .btn-gold,
+      .btn-ghost,
+      .footer-wa-btn,
+      .mini-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero {
+        padding: 64px 16px 48px;
+        min-height: auto;
+      }
+
+      .hero-glow {
+        width: 100%;
+        height: 220px;
+      }
+
+      .hero-title {
+        font-size: clamp(30px, 11vw, 42px);
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+
+      .hero-desc {
+        font-size: 12px;
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+
+      .hero-actions,
+      .product-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .sec {
+        padding: 56px 16px;
+      }
+
+      .sec-title {
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      .sec-sub,
+      .product-desc {
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .filters-wrap,
+      .product-grid,
+      .brand-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card,
+      .brand-card {
+        padding: 28px 20px;
+      }
+
+      .footer {
+        padding: 36px 16px 24px;
+      }
+
+      .footer-brand {
+        font-size: 18px;
+      }
+
+      .footer-links {
+        gap: 14px;
+        flex-direction: column;
+      }
+
+      .footer-links a {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav class="nav">
+      <div class="nav-logo">
+        <img src="logo-black.png" alt="Bhumi Enterprise Logo" class="site-logo">
+        <span class="nav-brand">Bhumi Enterprise</span>
+      </div>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <div class="nav-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="products.html" class="active">Products</a>
+        <a href="bulk-orders.html">Bulk Orders</a>
+        <a href="emi.html">EMI</a>
+        <a href="service.html">Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="tel:+919876543210" class="nav-btn">Get a Quote</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-bottom-line"></div>
+      <span class="hero-eyebrow">Our Collection</span>
+      <h1 class="hero-title">Browse by brand.<br><span class="gold-text">Browse by category.</span></h1>
+      <p class="hero-desc">
+        Explore appliances by your preferred brand and product type. Find the right match faster for your home,
+        office or project requirement.
+      </p>
+      <div class="hero-actions">
+        <a href="contact.html" class="btn-gold">Need Help Choosing?</a>
+        <a href="bulk-orders.html" class="btn-ghost">Need Bulk Pricing?</a>
+      </div>
+    </section>
+
+    <section class="sec sec-dark" style="padding-bottom: 30px;">
+      <span class="sec-label">Browse Products</span>
+      <h2 class="sec-title light">Filter by brand or category.</h2>
+      <p class="sec-sub light">Choose a brand and product type to explore faster.</p>
+
+      <div class="filters-wrap">
+        <div class="filter-box">
+          <label for="brandFilter">Brand</label>
+          <select id="brandFilter" class="filter-select">
+            <option value="all">All Brands</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Panasonic">Panasonic</option>
+            <option value="LG">LG</option>
+            <option value="Hitachi">Hitachi</option>
+            <option value="Whirlpool">Whirlpool</option>
+            <option value="Sony">Sony</option>
+            <option value="IFB">IFB</option>
+            <option value="Lloyd">Lloyd</option>
+            <option value="Mitsubishi">Mitsubishi</option>
+            <option value="OG">OG</option>
+          </select>
+        </div>
+
+        <div class="filter-box">
+          <label for="categoryFilter">Product Category</label>
+          <select id="categoryFilter" class="filter-select">
+            <option value="all">All Categories</option>
+            <option value="TV">TV</option>
+            <option value="AC">AC</option>
+            <option value="Refrigerator">Refrigerator</option>
+            <option value="Washing Machine">Washing Machine</option>
+            <option value="Dishwasher">Dishwasher</option>
+            <option value="Microwave">Microwave</option>
+            <option value="Atta Maker">Atta Maker</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="results-note">
+        Use one or both filters to narrow down the products shown below.
+      </div>
+
+      <div class="empty-message" id="emptyMessage">
+        No products match this filter combination right now. Try another brand or category.
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <div class="product-card" data-brand="LG" data-category="AC">
+          <div class="product-top">
+            <div class="product-icon">❄️</div>
+            <div class="product-tag">Best Seller</div>
+          </div>
+          <div class="product-name">LG Split AC</div>
+          <div class="product-brand">LG · AC</div>
+          <div class="product-desc">Fast cooling, energy-saving inverter performance and dependable installation support.</div>
+          <div class="product-price">From ₹28,000</div>
+          <div class="product-features">
+            <span class="feature-chip">Inverter</span>
+            <span class="feature-chip">Fast Cooling</span>
+            <span class="feature-chip">Low Noise</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20LG%20Split%20AC" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Samsung" data-category="TV">
+          <div class="product-top">
+            <div class="product-icon">📺</div>
+            <div class="product-tag">Smart Choice</div>
+          </div>
+          <div class="product-name">Samsung Smart TV</div>
+          <div class="product-brand">Samsung · TV</div>
+          <div class="product-desc">Modern smart entertainment system with premium display quality and smooth performance.</div>
+          <div class="product-price">From ₹12,000</div>
+          <div class="product-features">
+            <span class="feature-chip">Smart TV</span>
+            <span class="feature-chip">HD/4K</span>
+            <span class="feature-chip">Warranty</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Samsung%20Smart%20TV" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Whirlpool" data-category="Refrigerator">
+          <div class="product-top">
+            <div class="product-icon">🧊</div>
+            <div class="product-tag">Family Pick</div>
+          </div>
+          <div class="product-name">Whirlpool Refrigerator</div>
+          <div class="product-brand">Whirlpool · Refrigerator</div>
+          <div class="product-desc">Elegant refrigeration with efficient cooling, practical storage and family-friendly design.</div>
+          <div class="product-price">From ₹15,000</div>
+          <div class="product-features">
+            <span class="feature-chip">Spacious</span>
+            <span class="feature-chip">Energy Saving</span>
+            <span class="feature-chip">Premium Finish</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Whirlpool%20Refrigerator" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="IFB" data-category="Microwave">
+          <div class="product-top">
+            <div class="product-icon">📡</div>
+            <div class="product-tag">Kitchen Pick</div>
+          </div>
+          <div class="product-name">IFB Microwave Oven</div>
+          <div class="product-brand">IFB · Microwave</div>
+          <div class="product-desc">Modern microwave option for quick cooking, reheating and easy daily convenience.</div>
+          <div class="product-price">From ₹6,500</div>
+          <div class="product-features">
+            <span class="feature-chip">Fast Cooking</span>
+            <span class="feature-chip">Compact</span>
+            <span class="feature-chip">Easy Use</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20IFB%20Microwave%20Oven" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Bosch" data-category="Washing Machine" style="display:none;"></div>
+
+        <div class="product-card" data-brand="Panasonic" data-category="TV">
+          <div class="product-top">
+            <div class="product-icon">📺</div>
+            <div class="product-tag">Premium View</div>
+          </div>
+          <div class="product-name">Panasonic LED TV</div>
+          <div class="product-brand">Panasonic · TV</div>
+          <div class="product-desc">A reliable television option with clean display quality and excellent everyday value.</div>
+          <div class="product-price">From ₹14,500</div>
+          <div class="product-features">
+            <span class="feature-chip">LED Display</span>
+            <span class="feature-chip">Smart Ready</span>
+            <span class="feature-chip">Trusted Brand</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Panasonic%20LED%20TV" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Hitachi" data-category="AC">
+          <div class="product-top">
+            <div class="product-icon">❄️</div>
+            <div class="product-tag">Premium Cooling</div>
+          </div>
+          <div class="product-name">Hitachi Inverter AC</div>
+          <div class="product-brand">Hitachi · AC</div>
+          <div class="product-desc">Powerful cooling with premium performance, quieter operation and efficiency-focused design.</div>
+          <div class="product-price">From ₹31,000</div>
+          <div class="product-features">
+            <span class="feature-chip">Inverter</span>
+            <span class="feature-chip">Copper Coil</span>
+            <span class="feature-chip">Energy Efficient</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Hitachi%20Inverter%20AC" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Sony" data-category="TV">
+          <div class="product-top">
+            <div class="product-icon">📺</div>
+            <div class="product-tag">Premium Pick</div>
+          </div>
+          <div class="product-name">Sony Smart TV</div>
+          <div class="product-brand">Sony · TV</div>
+          <div class="product-desc">A premium smart TV experience with crisp visuals and trusted long-term performance.</div>
+          <div class="product-price">From ₹24,000</div>
+          <div class="product-features">
+            <span class="feature-chip">4K Ready</span>
+            <span class="feature-chip">Premium Audio</span>
+            <span class="feature-chip">Smart Features</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Sony%20Smart%20TV" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Lloyd" data-category="AC">
+          <div class="product-top">
+            <div class="product-icon">❄️</div>
+            <div class="product-tag">Value Choice</div>
+          </div>
+          <div class="product-name">Lloyd Split AC</div>
+          <div class="product-brand">Lloyd · AC</div>
+          <div class="product-desc">A budget-friendly cooling option with practical performance for daily use.</div>
+          <div class="product-price">From ₹26,500</div>
+          <div class="product-features">
+            <span class="feature-chip">Efficient</span>
+            <span class="feature-chip">Home Use</span>
+            <span class="feature-chip">Installation</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Lloyd%20Split%20AC" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="Mitsubishi" data-category="AC">
+          <div class="product-top">
+            <div class="product-icon">❄️</div>
+            <div class="product-tag">Elite Cooling</div>
+          </div>
+          <div class="product-name">Mitsubishi AC</div>
+          <div class="product-brand">Mitsubishi · AC</div>
+          <div class="product-desc">High-end cooling performance for premium homes and larger requirements.</div>
+          <div class="product-price">From ₹39,000</div>
+          <div class="product-features">
+            <span class="feature-chip">Premium</span>
+            <span class="feature-chip">Strong Cooling</span>
+            <span class="feature-chip">Trusted Brand</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20Mitsubishi%20AC" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="OG" data-category="Atta Maker">
+          <div class="product-top">
+            <div class="product-icon">🥣</div>
+            <div class="product-tag">Kitchen Utility</div>
+          </div>
+          <div class="product-name">OG Atta Maker</div>
+          <div class="product-brand">OG · Atta Maker</div>
+          <div class="product-desc">A simple home appliance designed to make kitchen preparation faster and easier.</div>
+          <div class="product-price">Price on Enquiry</div>
+          <div class="product-features">
+            <span class="feature-chip">Compact</span>
+            <span class="feature-chip">Easy Use</span>
+            <span class="feature-chip">Home Kitchen</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20OG%20Atta%20Maker" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="LG" data-category="Washing Machine">
+          <div class="product-top">
+            <div class="product-icon">🫧</div>
+            <div class="product-tag">Top Rated</div>
+          </div>
+          <div class="product-name">LG Washing Machine</div>
+          <div class="product-brand">LG · Washing Machine</div>
+          <div class="product-desc">Efficient daily laundry solution with practical features and strong brand reliability.</div>
+          <div class="product-price">From ₹18,500</div>
+          <div class="product-features">
+            <span class="feature-chip">Top/Front Load</span>
+            <span class="feature-chip">Fabric Care</span>
+            <span class="feature-chip">Daily Use</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20LG%20Washing%20Machine" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="product-card" data-brand="IFB" data-category="Dishwasher">
+          <div class="product-top">
+            <div class="product-icon">🍽️</div>
+            <div class="product-tag">Modern Kitchen</div>
+          </div>
+          <div class="product-name">IFB Dishwasher</div>
+          <div class="product-brand">IFB · Dishwasher</div>
+          <div class="product-desc">A practical dishwasher choice for cleaner kitchens and easier daily routines.</div>
+          <div class="product-price">From ₹24,000</div>
+          <div class="product-features">
+            <span class="feature-chip">Time Saving</span>
+            <span class="feature-chip">Water Efficient</span>
+            <span class="feature-chip">Kitchen Upgrade</span>
+          </div>
+          <div class="product-actions">
+            <a href="contact.html" class="mini-btn gold">Enquire Now</a>
+            <a href="https://wa.me/919876543210?text=I%20want%20details%20for%20IFB%20Dishwasher" target="_blank" class="mini-btn ghost">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-black">
+      <span class="sec-label">Brand Options</span>
+      <h2 class="sec-title light">The brands you asked for.</h2>
+      <p class="sec-sub light">Available brands may vary by category and stock, but these are the core names shown in your filter.</p>
+
+      <div class="brand-grid">
+        <div class="brand-card"><span>Samsung</span></div>
+        <div class="brand-card"><span>Panasonic</span></div>
+        <div class="brand-card"><span>LG</span></div>
+        <div class="brand-card"><span>Hitachi</span></div>
+        <div class="brand-card"><span>Whirlpool</span></div>
+        <div class="brand-card"><span>Sony</span></div>
+        <div class="brand-card"><span>IFB</span></div>
+        <div class="brand-card"><span>Lloyd</span></div>
+        <div class="brand-card"><span>Mitsubishi</span></div>
+        <div class="brand-card"><span>OG</span></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">Bhumi Enterprise</div>
+          <div class="footer-tagline">Premium Appliances · Gandhinagar, Gujarat</div>
+          <div class="footer-info">Mon – Sat · 10 am – 8 pm · GST Registered</div>
+        </div>
+
+        <div class="footer-links">
+          <a href="products.html">Products</a>
+          <a href="bulk-orders.html">Bulk Orders</a>
+          <a href="emi.html">EMI Plans</a>
+          <a href="service.html">Service &amp; AMC</a>
+          <a href="contact.html">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 Bhumi Enterprise, Gandhinagar. All rights reserved.</div>
+        <a href="https://wa.me/919876543210?text=Hello%20Bhumi%20Enterprise%2C%20I%20want%20to%20know%20about%20your%20products." target="_blank" class="footer-wa-btn">💬 Chat on WhatsApp</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', function () {
+        menuToggle.classList.toggle('active');
+        mobileMenu.classList.toggle('show');
+      });
+    }
+
+    const brandFilter = document.getElementById('brandFilter');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const productCards = document.querySelectorAll('.product-card');
+    const emptyMessage = document.getElementById('emptyMessage');
+
+    function filterProducts() {
+      const selectedBrand = brandFilter.value;
+      const selectedCategory = categoryFilter.value;
+      let visibleCount = 0;
+
+      productCards.forEach(card => {
+        const cardBrand = card.getAttribute('data-brand');
+        const cardCategory = card.getAttribute('data-category');
+
+        const brandMatch = selectedBrand === 'all' || cardBrand === selectedBrand;
+        const categoryMatch = selectedCategory === 'all' || cardCategory === selectedCategory;
+
+        if (brandMatch && categoryMatch) {
+          card.style.display = 'block';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyMessage.style.display = 'block';
+      } else {
+        emptyMessage.style.display = 'none';
+      }
+    }
+
+    if (brandFilter && categoryFilter) {
+      brandFilter.addEventListener('change', filterProducts);
+      categoryFilter.addEventListener('change', filterProducts);
+    }
+  </script>
+</body>
+</html>
