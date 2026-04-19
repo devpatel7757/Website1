@@ -3,289 +3,1099 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bulk Orders | Bhumi Enterprise</title>
+  <title>Bulk Orders — Bhumi Enterprise</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black:#080808;
-      --surface:#0c0c0c;
-      --surface-2:#111111;
-      --gold:#B8920E;
-      --gold-light:#DEC76A;
-      --text-1:#F0EDE8;
-      --text-2:#9A9590;
-      --border:rgba(180,145,40,0.13);
-      --border-faint:rgba(180,145,40,0.06);
+      --black:        #080808;
+      --surface:      #0c0c0c;
+      --surface-2:    #111111;
+      --surface-3:    #161616;
+      --cream-bg:     #f5f2ec;
+      --gold-deep:    #8B6914;
+      --gold:         #B8920E;
+      --gold-mid:     #C9A227;
+      --gold-warm:    #D4AF37;
+      --gold-light:   #DEC76A;
+      --white:        #FAFAF8;
+      --text-1:       #F0EDE8;
+      --text-2:       #9A9590;
+      --text-3:       #5A5652;
+      --border:       rgba(180,145,40,0.13);
+      --border-faint: rgba(180,145,40,0.06);
+      --f-display:    'Inter', system-ui, sans-serif;
+      --f-body:       'Inter', system-ui, sans-serif;
+      --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Inter',sans-serif;
-      background:var(--black);
-      color:var(--text-1);
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    .nav{
-      background:rgba(8,8,8,0.95);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 48px;
-      height:78px;
-      border-bottom:1px solid var(--border-faint);
+    html {
+      scroll-behavior: smooth;
     }
 
-    .nav-logo{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    html, body {
+      overflow-x: hidden;
     }
 
-    .site-logo{
-      height:58px;
-      width:auto;
-      display:block;
-      object-fit:contain;
+    body {
+      font-family: var(--f-body);
+      background: var(--black);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1;
     }
 
-    .nav-brand{
-      font-size:16px;
-      color:var(--text-1);
-      letter-spacing:0.07em;
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.5;
     }
 
-    .nav-menu{
-      display:flex;
-      gap:30px;
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .nav-menu a{
-      text-decoration:none;
-      color:var(--text-2);
-      font-size:11px;
-      letter-spacing:0.12em;
-      text-transform:uppercase;
+    @keyframes goldShimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position: 200% center; }
     }
 
-    .nav-menu a:hover{
-      color:var(--gold-light);
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.38; }
     }
 
-    .hero{
-      padding:100px 48px 70px;
-      text-align:center;
-      background:var(--surface);
+    .gold-text {
+      background: linear-gradient(90deg,
+        var(--gold-mid), var(--gold-warm), var(--gold-light),
+        var(--gold-warm), var(--gold-mid));
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: goldShimmer 5s linear infinite;
     }
 
-    .hero h1{
-      font-size:56px;
-      font-weight:300;
-      margin-bottom:18px;
+    .page {
+      background: var(--black);
+      border-radius: 18px;
+      border: 1px solid var(--border-faint);
+      overflow: hidden;
+      box-shadow: 0 60px 120px rgba(0,0,0,0.85);
     }
 
-    .gold{
-      color:var(--gold-light);
+    .nav {
+      background: rgba(8,8,8,0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 78px;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      border-bottom: 1px solid var(--border-faint);
     }
 
-    .hero p{
-      max-width:700px;
-      margin:0 auto;
-      color:var(--text-2);
-      line-height:1.8;
-      font-size:15px;
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
     }
 
-    .section{
-      padding:70px 48px;
+    .site-logo {
+      height: 58px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      max-width: 100%;
     }
 
-    .bulk-wrap{
-      display:grid;
-      grid-template-columns:1.2fr 0.9fr;
-      gap:28px;
+    .nav-brand {
+      font-family: var(--f-display);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-1);
+      letter-spacing: 0.07em;
+      white-space: nowrap;
     }
 
-    .bulk-left{
-      background:var(--surface);
-      border:1px solid var(--border-faint);
-      padding:52px 44px;
+    .nav-menu {
+      display: flex;
+      gap: 36px;
+      align-items: center;
     }
 
-    .label{
-      display:block;
-      color:var(--gold);
-      font-size:10px;
-      letter-spacing:0.22em;
-      text-transform:uppercase;
-      margin-bottom:16px;
+    .nav-menu a {
+      font-size: 10.5px;
+      font-weight: 400;
+      color: var(--text-2);
+      text-decoration: none;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s var(--ease);
+      cursor: pointer;
     }
 
-    .bulk-left h2{
-      font-size:42px;
-      font-weight:400;
-      margin-bottom:14px;
-      line-height:1.2;
+    .nav-menu a:hover,
+    .nav-menu a.active {
+      color: var(--gold-warm);
     }
 
-    .bulk-left p{
-      color:var(--text-2);
-      line-height:1.9;
-      font-size:14px;
+    .nav-btn {
+      font-family: var(--f-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      background: transparent;
+      border: 1px solid rgba(180,145,40,0.35);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .bulk-tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:26px;
+    .nav-btn:hover {
+      background: var(--gold-mid);
+      color: var(--black);
     }
 
-    .bulk-tag{
-      font-size:10px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      color:var(--gold-light);
-      border:1px solid rgba(180,145,40,0.22);
-      padding:7px 12px;
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      background: transparent;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      margin-left: auto;
     }
 
-    .bulk-card{
-      background:var(--surface-2);
-      border:1px solid var(--border);
-      padding:40px 34px;
+    .menu-toggle span {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--gold-warm);
+      transition: 0.25s var(--ease);
     }
 
-    .bulk-card h3{
-      font-size:24px;
-      font-weight:400;
-      margin-bottom:24px;
+    .menu-toggle.active span:nth-child(1) {
+      transform: translateY(6.5px) rotate(45deg);
     }
 
-    .bulk-list{
-      display:grid;
-      gap:12px;
-      margin-bottom:28px;
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
     }
 
-    .bulk-item{
-      font-size:14px;
-      color:var(--text-2);
-      line-height:1.7;
-      border-bottom:1px solid var(--border-faint);
-      padding-bottom:10px;
+    .menu-toggle.active span:nth-child(3) {
+      transform: translateY(-6.5px) rotate(-45deg);
     }
 
-    .bulk-actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:20px;
+    .hero {
+      background: var(--surface);
+      min-height: 72vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 48px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn-gold, .btn-ghost{
-      padding:14px 20px;
-      text-decoration:none;
-      font-size:12px;
-      text-transform:uppercase;
-      letter-spacing:0.1em;
-      display:inline-block;
+    .hero-glow {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 350px;
+      background: radial-gradient(ellipse at top, rgba(180,146,14,0.12) 0%, transparent 65%);
+      pointer-events: none;
+      animation: subtlePulse 7s ease-in-out infinite;
     }
 
-    .btn-gold{
-      background:var(--gold);
-      color:#000;
+    .hero-bottom-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent, var(--border) 30%,
+        rgba(180,145,40,0.3) 50%, var(--border) 70%, transparent);
     }
 
-    .btn-ghost{
-      border:1px solid rgba(180,145,40,0.22);
-      color:var(--gold-light);
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      margin-bottom: 30px;
+      animation: fadeUp 0.7s var(--ease) both;
     }
 
-    .footer{
-      padding:32px 48px;
-      border-top:1px solid var(--border-faint);
-      color:var(--text-2);
-      font-size:12px;
-      text-align:center;
+    .hero-title {
+      font-family: var(--f-display);
+      font-size: clamp(48px, 7vw, 82px);
+      font-weight: 300;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+      margin-bottom: 12px;
+      animation: fadeUp 0.7s 0.1s var(--ease) both;
     }
 
-    @media (max-width: 900px){
-      .bulk-wrap{grid-template-columns:1fr}
-      .nav{padding:0 20px;flex-wrap:wrap;height:auto;padding-top:16px;padding-bottom:16px}
-      .nav-menu{flex-wrap:wrap;gap:16px}
-      .hero,.section{padding-left:20px;padding-right:20px}
+    .hero-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.85;
+      max-width: 680px;
+      margin: 0 auto 44px;
+      animation: fadeUp 0.7s 0.26s var(--ease) both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s 0.34s var(--ease) both;
+    }
+
+    .btn-gold {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold-mid);
+      border: none;
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-warm);
+      box-shadow: 0 6px 28px rgba(180,145,14,0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      font-family: var(--f-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 14px 36px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(180,145,40,0.3);
+      color: var(--gold-light);
+    }
+
+    .sec {
+      padding: 96px 48px;
+    }
+
+    .sec-dark   { background: var(--surface); }
+    .sec-darker { background: var(--surface-2); }
+    .sec-cream  { background: var(--cream-bg); }
+    .sec-black  { background: var(--black); }
+
+    .sec-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      margin-bottom: 16px;
+    }
+
+    .sec-title {
+      font-family: var(--f-display);
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+    }
+
+    .sec-title.light { color: var(--text-1); }
+    .sec-title.dark  { color: #18150f; }
+
+    .sec-sub {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.85;
+      margin-top: 12px;
+    }
+
+    .sec-sub.light { color: var(--text-2); }
+    .sec-sub.dark  { color: #6a6050; }
+
+    .bulk-main {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      margin-top: 56px;
+    }
+
+    .bulk-panel {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      padding: 42px 34px;
+    }
+
+    .bulk-panel-title {
+      font-family: var(--f-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--text-1);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .bulk-panel-text {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.85;
+    }
+
+    .bulk-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .bulk-tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      border: 1px solid rgba(180,145,40,0.22);
+      padding: 7px 12px;
+    }
+
+    .bulk-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .bulk-item {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.7;
+      border-bottom: 1px solid var(--border-faint);
+      padding-bottom: 10px;
+    }
+
+    .bulk-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 26px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border-faint);
+      margin-top: 56px;
+      border: 1px solid var(--border-faint);
+    }
+
+    .mini-card {
+      background: var(--surface);
+      padding: 36px 28px;
+      transition: background 0.2s;
+    }
+
+    .mini-card:hover {
+      background: var(--surface-2);
+    }
+
+    .mini-card h3 {
+      font-family: var(--f-display);
+      font-size: 20px;
+      font-weight: 400;
+      margin-bottom: 12px;
+      color: var(--text-1);
+    }
+
+    .mini-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.8;
+    }
+
+    .mini-card .line {
+      width: 24px;
+      height: 1px;
+      background: var(--gold-mid);
+      margin-bottom: 18px;
+      opacity: 0.5;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: #e0dbd2;
+      border: 1px solid #e0dbd2;
+      margin-top: 56px;
+    }
+
+    .process-card {
+      background: var(--cream-bg);
+      padding: 38px 30px;
+    }
+
+    .process-number {
+      font-family: var(--f-display);
+      font-size: 34px;
+      font-weight: 300;
+      color: var(--gold);
+      opacity: 0.45;
+      line-height: 1;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .process-card h3 {
+      font-family: var(--f-display);
+      font-size: 17px;
+      font-weight: 500;
+      color: #18150e;
+      margin-bottom: 10px;
+    }
+
+    .process-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: #6a6050;
+      line-height: 1.75;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border-faint);
+      border: 1px solid var(--border-faint);
+      margin-top: 56px;
+    }
+
+    .faq-card {
+      background: var(--surface-2);
+      padding: 34px 28px;
+    }
+
+    .faq-card h3 {
+      font-family: var(--f-display);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--text-1);
+      margin-bottom: 12px;
+    }
+
+    .faq-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-2);
+      line-height: 1.8;
+    }
+
+    .footer {
+      background: #050505;
+      padding: 52px 48px 28px;
+      border-top: 1px solid var(--border-faint);
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand {
+      font-family: var(--f-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--text-1);
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .footer-tagline {
+      font-family: var(--f-display);
+      font-size: 12px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-3);
+      margin-bottom: 10px;
+    }
+
+    .footer-info {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--text-3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .footer-links a {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-3);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--gold-warm);
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: var(--border-faint);
+      margin-bottom: 24px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      font-weight: 300;
+      color: var(--text-3);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-wa-btn {
+      font-family: var(--f-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--gold-mid);
+      border: none;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-wa-btn:hover {
+      background: var(--gold-warm);
+    }
+
+    @media (max-width: 1100px) {
+      .nav {
+        padding: 0 24px;
+      }
+
+      .hero {
+        padding: 90px 24px 70px;
+        min-height: auto;
+      }
+
+      .sec,
+      .footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .cards-grid,
+      .process-grid,
+      .faq-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        height: auto;
+        padding: 16px 20px;
+        flex-wrap: wrap;
+        gap: 14px;
+        position: relative;
+      }
+
+      .nav-logo {
+        width: auto;
+        justify-content: flex-start;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .nav-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 18px 0 6px;
+        border-top: 1px solid var(--border-faint);
+        margin-top: 8px;
+      }
+
+      .nav-menu.show {
+        display: flex;
+      }
+
+      .nav-menu a {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+      }
+
+      .nav-btn {
+        margin: 8px 0 0;
+      }
+
+      .hero {
+        padding: 80px 20px 60px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 9vw, 58px);
+      }
+
+      .hero-desc {
+        font-size: 13px;
+        max-width: 100%;
+      }
+
+      .bulk-main {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid,
+      .process-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-top,
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        line-height: 1.4;
+      }
+
+      .page {
+        border-radius: 0;
+      }
+
+      .nav {
+        padding: 14px 16px;
+        gap: 12px;
+      }
+
+      .nav-logo {
+        width: auto;
+        justify-content: flex-start;
+      }
+
+      .site-logo {
+        height: 48px;
+      }
+
+      .nav-brand {
+        font-size: 14px;
+      }
+
+      .menu-toggle {
+        width: 42px;
+        height: 42px;
+      }
+
+      .nav-menu {
+        gap: 14px;
+        padding-top: 16px;
+      }
+
+      .nav-menu a {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+      }
+
+      .nav-btn,
+      .btn-gold,
+      .btn-ghost,
+      .footer-wa-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .hero {
+        padding: 64px 16px 48px;
+        min-height: auto;
+      }
+
+      .hero-glow {
+        width: 100%;
+        height: 220px;
+      }
+
+      .hero-title {
+        font-size: clamp(30px, 11vw, 42px);
+        line-height: 1.1;
+        margin-bottom: 14px;
+      }
+
+      .hero-desc {
+        font-size: 12px;
+        line-height: 1.7;
+        margin-bottom: 28px;
+      }
+
+      .hero-actions,
+      .bulk-actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      .sec {
+        padding: 56px 16px;
+      }
+
+      .sec-title {
+        font-size: 28px;
+        line-height: 1.2;
+      }
+
+      .sec-sub,
+      .bulk-panel-text,
+      .mini-card p,
+      .process-card p,
+      .faq-card p {
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .bulk-panel,
+      .mini-card,
+      .process-card,
+      .faq-card {
+        padding: 28px 20px;
+      }
+
+      .footer {
+        padding: 36px 16px 24px;
+      }
+
+      .footer-brand {
+        font-size: 18px;
+      }
+
+      .footer-links {
+        gap: 14px;
+        flex-direction: column;
+      }
+
+      .footer-links a {
+        font-size: 10px;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="page">
+    <nav class="nav">
+      <div class="nav-logo">
+        <img src="logo-black.png" alt="Bhumi Enterprise Logo" class="site-logo">
+        <span class="nav-brand">Bhumi Enterprise</span>
+      </div>
 
-  <nav class="nav">
-    <div class="nav-logo">
-      <img src="logo-black.png" alt="Bhumi Enterprise Logo" class="site-logo">
-      <span class="nav-brand">Bhumi Enterprise</span>
-    </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
 
-    <div class="nav-menu">
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="bulk-orders.html">Bulk Orders</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </nav>
+      <div class="nav-menu" id="mobileMenu">
+        <a href="/">Home</a>
+        <a href="products.html">Products</a>
+        <a href="bulk-orders.html" class="active">Bulk Orders</a>
+        <a href="emi.html">EMI</a>
+        <a href="service.html">Service</a>
+        <a href="contact.html">Contact</a>
+        <a href="tel:+919876543210" class="nav-btn">Get a Quote</a>
+      </div>
+    </nav>
 
-  <section class="hero">
-    <h1>Bulk Orders.<br><span class="gold">Premium Service.</span></h1>
-    <p>
-      Special pricing and dedicated support for builders, housing societies, hotels, schools,
-      government offices, and corporate buyers across Gandhinagar and nearby areas.
-    </p>
-  </section>
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-bottom-line"></div>
+      <span class="hero-eyebrow">Bulk &amp; Corporate Solutions</span>
+      <h1 class="hero-title">Big orders.<br><span class="gold-text">Premium service.</span></h1>
+      <p class="hero-desc">
+        Special pricing and dedicated support for builders, housing societies, hotels, schools,
+        government offices and corporate buyers across Gandhinagar and nearby areas.
+      </p>
+      <div class="hero-actions">
+        <a href="tel:+919876543210" class="btn-gold">Call for Quote</a>
+        <a href="https://wa.me/919876543210?text=Hello%20Bhumi%20Enterprise%2C%20I%20need%20a%20bulk%20order%20quote." target="_blank" class="btn-ghost">WhatsApp Sales</a>
+      </div>
+    </section>
 
-  <section class="section">
-    <div class="bulk-wrap">
-      <div class="bulk-left">
-        <span class="label">Bulk & Corporate Orders</span>
-        <h2>Big orders.<br><span class="gold">Better prices.</span></h2>
-        <p>
-          We provide fast quotations, GST billing, delivery coordination, installation support,
-          and premium appliance brand options for business and large-volume buyers.
+    <section class="sec sec-darker">
+      <span class="sec-label">Business Solutions</span>
+      <h2 class="sec-title light">Built for projects, teams and large-volume buying.</h2>
+      <p class="sec-sub light">
+        We support business buyers with faster quotations, better pricing, delivery coordination,
+        installation assistance and trusted after-sales support.
+      </p>
+
+      <div class="bulk-main">
+        <div class="bulk-panel">
+          <div class="bulk-panel-title">Who We Serve</div>
+          <p class="bulk-panel-text">
+            From premium residences to institutional projects, Bhumi Enterprise supports a wide range of
+            commercial and bulk purchase requirements with dependable execution and premium brands.
+          </p>
+          <div class="bulk-tags">
+            <span class="bulk-tag">Builders</span>
+            <span class="bulk-tag">Hotels</span>
+            <span class="bulk-tag">Offices</span>
+            <span class="bulk-tag">Schools</span>
+            <span class="bulk-tag">Hospitals</span>
+            <span class="bulk-tag">Societies</span>
+            <span class="bulk-tag">Retail Stores</span>
+            <span class="bulk-tag">GIFT City</span>
+          </div>
+        </div>
+
+        <div class="bulk-panel">
+          <div class="bulk-panel-title">Why Businesses Choose Us</div>
+          <div class="bulk-list">
+            <div class="bulk-item">✔ Best bulk pricing across premium brands</div>
+            <div class="bulk-item">✔ GST invoice on every business order</div>
+            <div class="bulk-item">✔ Delivery support and coordination</div>
+            <div class="bulk-item">✔ Installation assistance for project sites</div>
+            <div class="bulk-item">✔ Dedicated sales support for repeat buyers</div>
+            <div class="bulk-item">✔ Fast response for quotations and enquiries</div>
+          </div>
+          <div class="bulk-actions">
+            <a href="tel:+919876543210" class="btn-gold">Get Bulk Quote</a>
+            <a href="contact.html" class="btn-ghost">Email Enquiry</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-dark">
+      <span class="sec-label">What We Supply</span>
+      <h2 class="sec-title light">Appliance categories for every project.</h2>
+      <p class="sec-sub light">
+        Single-location or multi-site, we help source the right mix of appliances for residential and commercial use.
+      </p>
+
+      <div class="cards-grid">
+        <div class="mini-card">
+          <div class="line"></div>
+          <h3>Cooling</h3>
+          <p>Air conditioners, inverter systems, commercial cooling solutions and installation support for homes, offices and project sites.</p>
+        </div>
+        <div class="mini-card">
+          <div class="line"></div>
+          <h3>Refrigeration</h3>
+          <p>Single-door, double-door and family-sized refrigeration options for residences, hospitality spaces and institutions.</p>
+        </div>
+        <div class="mini-card">
+          <div class="line"></div>
+          <h3>Laundry</h3>
+          <p>Front-load and top-load washing machines with premium brand selection, delivery scheduling and installation coordination.</p>
+        </div>
+        <div class="mini-card">
+          <div class="line"></div>
+          <h3>Entertainment</h3>
+          <p>Smart TVs and display systems suitable for residential towers, hospitality rooms, lounges and office spaces.</p>
+        </div>
+        <div class="mini-card">
+          <div class="line"></div>
+          <h3>Kitchen</h3>
+          <p>Microwaves, dishwashers and modern kitchen appliances tailored for premium homes and business use.</p>
+        </div>
+        <div class="mini-card">
+          <div class="line"></div>
+          <h3>Custom Orders</h3>
+          <p>Need a mixed requirement for multiple categories? We can help build a custom quote based on your exact needs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-cream">
+      <div style="text-align:center;">
+        <span class="sec-label" style="color: var(--gold);">Simple Process</span>
+        <h2 class="sec-title dark">How bulk orders work.</h2>
+        <p class="sec-sub dark" style="max-width:420px;margin:12px auto 0;">
+          A clear process that keeps pricing, delivery and installation easy to manage.
         </p>
+      </div>
 
-        <div class="bulk-tags">
-          <span class="bulk-tag">Builders</span>
-          <span class="bulk-tag">Hotels</span>
-          <span class="bulk-tag">Offices</span>
-          <span class="bulk-tag">Schools</span>
-          <span class="bulk-tag">GIFT City</span>
-          <span class="bulk-tag">Societies</span>
+      <div class="process-grid">
+        <div class="process-card">
+          <div class="process-number">01</div>
+          <h3>Share your requirement</h3>
+          <p>Tell us the categories, quantity, brand preference and delivery location.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">02</div>
+          <h3>Receive your quote</h3>
+          <p>We prepare a competitive quotation with pricing, availability and billing details.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">03</div>
+          <h3>Confirm your order</h3>
+          <p>Once approved, we coordinate stock, invoice and dispatch timelines for your project.</p>
+        </div>
+        <div class="process-card">
+          <div class="process-number">04</div>
+          <h3>Delivery & installation</h3>
+          <p>We support delivery scheduling and installation coordination for a smoother handover.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-black">
+      <span class="sec-label">Common Questions</span>
+      <h2 class="sec-title light">Bulk order FAQs.</h2>
+      <p class="sec-sub light">A few things business buyers usually want to know before they order.</p>
+
+      <div class="faq-grid">
+        <div class="faq-card">
+          <h3>Do you provide GST invoices?</h3>
+          <p>Yes. We provide proper GST invoices for eligible business and institutional purchases.</p>
+        </div>
+        <div class="faq-card">
+          <h3>Can you handle large quantities?</h3>
+          <p>Yes. We support both moderate and high-volume orders depending on product type and availability.</p>
+        </div>
+        <div class="faq-card">
+          <h3>Do you help with installation?</h3>
+          <p>Yes. We coordinate installation support for applicable products and project requirements.</p>
+        </div>
+        <div class="faq-card">
+          <h3>Can I request a custom quote?</h3>
+          <p>Yes. Share your quantity, brands and site details and we will prepare a tailored quotation.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">Bhumi Enterprise</div>
+          <div class="footer-tagline">Premium Appliances · Gandhinagar, Gujarat</div>
+          <div class="footer-info">Mon – Sat · 10 am – 8 pm · GST Registered</div>
+        </div>
+
+        <div class="footer-links">
+          <a href="products.html">Products</a>
+          <a href="bulk-orders.html">Bulk Orders</a>
+          <a href="emi.html">EMI Plans</a>
+          <a href="service.html">Service &amp; AMC</a>
+          <a href="contact.html">Contact</a>
         </div>
       </div>
 
-      <div class="bulk-card">
-        <h3>Why Bulk Buyers Choose Us</h3>
+      <div class="footer-divider"></div>
 
-        <div class="bulk-list">
-          <div class="bulk-item">✔ Best bulk pricing</div>
-          <div class="bulk-item">✔ GST invoice available</div>
-          <div class="bulk-item">✔ Delivery support</div>
-          <div class="bulk-item">✔ Installation assistance</div>
-          <div class="bulk-item">✔ Premium brand options</div>
-          <div class="bulk-item">✔ Dedicated sales support</div>
-        </div>
-
-        <div class="bulk-actions">
-          <a href="tel:+919876543210" class="btn-gold">Get Bulk Quote</a>
-          <a href="https://wa.me/919876543210?text=Hello%20Bhumi%20Enterprise%2C%20I%20need%20a%20bulk%20order%20quote." class="btn-ghost" target="_blank">WhatsApp Sales</a>
-        </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 Bhumi Enterprise, Gandhinagar. All rights reserved.</div>
+        <a href="https://wa.me/919876543210?text=Hello%20Bhumi%20Enterprise%2C%20I%20need%20a%20bulk%20order%20quote." target="_blank" class="footer-wa-btn">💬 Chat on WhatsApp</a>
       </div>
-    </div>
-  </section>
+    </footer>
+  </div>
 
-  <footer class="footer">
-    © 2025 Bhumi Enterprise · Gandhinagar · Bulk Appliance Solutions
-  </footer>
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
 
+    menuToggle.addEventListener('click', function () {
+      menuToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('show');
+    });
+  </script>
 </body>
 </html>
